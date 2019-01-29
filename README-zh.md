@@ -1,13 +1,12 @@
-# GraphQL Spring Boot basic usage 
+# GraphQL Spring Boot 使用 
 
-[中文](README-zh.md)
+[English](README.md)
 
-> Create a basic demo application by SpringBoot and GraphQL, save data in MongoDB 
+> 使用 SpringBoot 和 GraphQL 创建一个最简单的增删改查接口应用，使用 MongoDB 存储数据
 
+## 创建应用
 
-## Create Application
-
-- Add dependencies
+- 添加依赖
 
 ```groovy
 dependencies {
@@ -19,9 +18,9 @@ dependencies {
 }
 ```
 
-### Add Interface
+### 添加基础接口 
 
-- Add Model
+- 添加 Model
 
 ```java
 @Data
@@ -43,15 +42,14 @@ public class Post {
 }
 ```
 
-- Add Repository 
+- 添加 Repository 
 
 ```java
 public interface PostRepository extends MongoRepository<Post, String> {
 }
 ```
 
-- Modify Configuration
-
+- 添加配置
 ```properties
 # MongoDB Config
 spring.data.mongodb.host=localhost
@@ -61,7 +59,7 @@ spring.data.mongodb.port=27017
 spring.data.mongodb.database=graphql
 ```
 
-- Add data initializer
+- 添加数据初始化
 
 ```java
 @Component
@@ -93,22 +91,22 @@ public class DataInitializer implements ApplicationRunner {
 }
 ```
 
-### Configure GraphQL  
+### 添加 GraphQL 配置 
 
-- Add dependencies of  GraphQL
+- 添加 GraphQL 依赖
 
 ```groovy
     implementation('com.graphql-java:graphql-spring-boot-starter:5.0.2')
-    // Provide UI    
+    // 提供 UI    
     implementation('com.graphql-java:graphiql-spring-boot-starter:5.0.2')
-    // For Resolver    
+    // 用于 Resolver    
     implementation('com.graphql-java:graphql-java-tools:5.2.4')
 ```
 
-- Add GraphQL definition script post.grahpqls
+- 添加接口定义脚本
 
 ```graphql
-# io.github.helloworlde.graphql.model.Post corresponding Model
+# io.github.helloworlde.graphql.model.Post 对应的Model
 type Post {
     id: ID,
     title: String,
@@ -117,19 +115,19 @@ type Post {
 }
 
 
-# io.github.helloworlde.graphql.resolver.PostMutation.updatePost argument post
+# io.github.helloworlde.graphql.resolver.PostMutation.updatePost 的入参 post
 input PostInput{
     title: String!,
     content: String!
 }
 
-# query for io.github.helloworlde.graphql.resolver.PostQuery
+# 查询 io.github.helloworlde.graphql.resolver.PostQuery
 type Query{
     posts: [Post]
     post(id: ID!): Post
 }
 
-# modify for io.github.helloworlde.graphql.resolver.PostMutation
+# 修改 io.github.helloworlde.graphql.resolver.PostMutation
 type Mutation{
     createPost(post: PostInput): Post!
     updatePost(id: ID!, post: PostInput): Post!
@@ -137,9 +135,9 @@ type Mutation{
 }
 ```
 
-#### Add Interface Resolver
+#### 添加接口 Resolver
 
-- Query Resolver
+- 查询 Resolver
 
 ```java
 @Component
@@ -159,7 +157,7 @@ public class PostQuery implements GraphQLQueryResolver {
 }
 ```
 
-- Modify Resolver
+- 修改 Resolver
 
 ```java
 @Component
@@ -197,17 +195,17 @@ public class PostMutation implements GraphQLMutationResolver {
 }
 ```
 
-## Test 
+## 测试 
 
-- Startup Application
+- 启动应用 
 
-- Access [http://localhost:8080/graphiql](http://localhost:8080/graphiql)
+- 访问 [http://localhost:8080/graphiql](http://localhost:8080/graphiql)
 
 ![GraphQL](/img/GraphQL.png)
 
-#### Query  
+#### 查询 
 
-- Query List
+- 查询列表
 
 ```graphql
 {
@@ -241,7 +239,7 @@ public class PostMutation implements GraphQLMutationResolver {
 }
 ```
 
-- Query Specified Post by id
+- 查询指定 id
 
 ```graphql
 {
@@ -267,9 +265,9 @@ public class PostMutation implements GraphQLMutationResolver {
 }
 ```
 
-#### Modify
+#### 修改
 
-- Create
+- 新增 
 
 ```graphql
 mutation {
@@ -295,7 +293,7 @@ mutation {
 }
 ```
 
-- Update 
+- 修改 
 
 ```graphql
 mutation {
@@ -321,7 +319,7 @@ mutation {
 }
 ```
 
-- Delete
+- 删除
 
 ```graphql
 mutation {
@@ -339,7 +337,7 @@ mutation {
 
 --- 
 
-### References
+### 参考文章
 
 - [GraphQL](http://graphql.cn/)
 - [Spring Boot + GraphQL + MongoDB](https://medium.com/oril/spring-boot-graphql-mongodb-8733002b728a)
